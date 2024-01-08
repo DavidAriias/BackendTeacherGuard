@@ -12,7 +12,7 @@ namespace TeachersGuardAPI.App.UseCases.Schedule
             _scheduleRepository = scheduleRepository;
         }
 
-        public async Task<List<ScheduleDto>?> GetScheduleByUserId(string userId)
+        public async Task<List<ScheduleDtoOut>?> GetScheduleByUserId(string userId)
         {
             var schedules =  await _scheduleRepository.GetSchedulesByUserId(userId);
 
@@ -24,6 +24,17 @@ namespace TeachersGuardAPI.App.UseCases.Schedule
         public async Task<bool> UserHasSchedule(string userId)
         {
             return await _scheduleRepository.UserHasSchedule(userId);
+        }
+
+        public async Task<ScheduleDtoOut?> CreateSchedule(ScheduleDtoIn schedule)
+        {
+            var scheduleEntity = ScheduleMapper.MapScheduleDtoInToScheduleEntity(schedule);
+
+            var scheduleResponse = await _scheduleRepository.CreateSchedule(scheduleEntity);
+
+            if (scheduleResponse == null) return null;
+
+            return ScheduleMapper.MapScheduleEntityToScheduleDto(scheduleResponse);
         }
     }
 }

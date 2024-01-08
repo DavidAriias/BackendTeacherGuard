@@ -17,13 +17,33 @@ namespace TeachersGuardAPI.Infraestructure.Mappers
             DayOfWeek = scheduleDocument.DayOfWeek,
         };
 
-        public static ScheduleDto MapScheduleEntityToScheduleDto(Schedule schedule) => new()
+        public static ScheduleDtoOut MapScheduleEntityToScheduleDto(Schedule schedule) => new()
         {
             DayOfWeek = schedule.DayOfWeek,
             End = schedule.End,
             PlaceId = schedule.PlaceId,
             ScheduleId = schedule.ScheduleId,
-            Start = schedule.Start
+            Start = schedule.Start,
+            UserId = schedule.UserId
+        };
+
+        public static Schedule MapScheduleDtoInToScheduleEntity(ScheduleDtoIn scheduleDto) => new()
+        {
+            DayOfWeek = scheduleDto.DayOfWeek,
+            End = scheduleDto.End,
+            Start = scheduleDto.Start,
+            PlaceId = scheduleDto.PlaceId,
+            UserId = scheduleDto.UserId,
+
+        };
+
+        public static ScheduleDocument MapScheduleEntityToScheduleDocument(Schedule schedule) => new()
+        {
+            DayOfWeek = schedule.DayOfWeek,
+            EndTime = schedule.End,
+            PlaceId = schedule.PlaceId,
+            StartTime = schedule.Start,
+            UserId= schedule.UserId,
         };
     }
 }

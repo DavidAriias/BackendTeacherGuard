@@ -23,5 +23,7 @@ namespace TeachersGuardAPI.Presentation.Controllers.Place
 
             return place != null ? Ok(place) : NotFound("This placeId maybe doesn't exits");
         }
+
+
     }
 }

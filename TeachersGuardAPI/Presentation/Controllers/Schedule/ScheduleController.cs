@@ -14,14 +14,24 @@ namespace TeachersGuardAPI.Presentation.Controllers.Schedule
             _scheduleUseCase = scheduleUseCase;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<ScheduleDto>?>> GetScheduleByUserId(string userId)
+        [HttpGet("get-list-schedule")]
+        public async Task<ActionResult<List<ScheduleDtoOut>?>> GetScheduleByUserId(string userId)
         {
             if (userId == null) return BadRequest("userId must be provided");
 
             var schedules = await _scheduleUseCase.GetScheduleByUserId(userId);
 
-            return schedules != null ? Ok(schedules) : NotFound("This user maybe doesn't has a schedule");
+            return schedules != null ? Ok(schedules) : NotFound("Este usuario no tiene un horario asignado");
+        }
+
+        [HttpPost("create")]
+        public async Task<ActionResult<ScheduleDtoOut?>> CreateSchedule(ScheduleDtoIn schedule)
+        {
+           var scheduleResponse = await _scheduleUseCase.CreateSchedule(schedule);
+
+            if (scheduleResponse == null) return StatusCode(500, "Error al crear el horario, intente mas tarde");
+
+            return Ok(scheduleResponse);
         }
 
     }

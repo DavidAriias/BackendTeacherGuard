@@ -21,7 +21,7 @@ namespace TeachersGuardAPI.Presentation.Controllers.User
 
             if (userId == null)
             {
-               return StatusCode(500, new { Message = "Error creating user" });
+               return StatusCode(500, new { Message = "Error al crear el usuario" });
             }
 
             return CreatedAtAction(nameof(CreateUser), new { id = userId});
@@ -37,7 +37,7 @@ namespace TeachersGuardAPI.Presentation.Controllers.User
                 return Ok(user);
             }
 
-            return Unauthorized("Wrong credentials");
+            return Unauthorized("Credenciales incorrectas, intente nuevamente");
         }
 
     }

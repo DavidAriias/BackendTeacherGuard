@@ -17,6 +17,30 @@ namespace TeachersGuardAPI.Infraestructure.Repositories
             _logger = logger;
         }
 
+        public async Task<Schedule?> CreateSchedule(Schedule schedule)
+        {
+            _logger.LogInformation("Creating schedule");
+
+            var scheduleToDb = ScheduleMapper.MapScheduleEntityToScheduleDocument(schedule);
+
+            try
+            {
+                await _context.Schedules.InsertOneAsync(scheduleToDb);
+                var scheduleId = scheduleToDb.Id.ToString();
+                _logger.LogInformation("Schedyle created successfully with ID: " + schedule);
+
+                schedule.ScheduleId = scheduleId;
+
+                return schedule;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error creating schedule: {ex.Message}");
+                return null;
+
+            }
+        }
+
         public async Task<List<Schedule>?> GetSchedulesByUserId(string userId)
         {
             _logger.LogInformation("Finding schedules for user with UserId: " + userId);
@@ -43,6 +67,7 @@ namespace TeachersGuardAPI.Infraestructure.Repositories
 
             return scheduleCount > 0;
         }
+
 
     }
 }
