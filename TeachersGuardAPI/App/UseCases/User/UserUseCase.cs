@@ -23,7 +23,6 @@ namespace TeachersGuardAPI.App.UseCases.User
            return await _userRepository.CreateUserAsync(userRepository);
 
         }
-
         public async Task<UserDtoOut?> GetUserAsync(UserDtoIn user)
         {
             var userRepository = UserMapper.MapUserDTOInToUserEntity(user);
