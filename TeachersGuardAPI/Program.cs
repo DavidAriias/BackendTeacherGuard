@@ -12,6 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
 builder.Services.Configure<MongoConfig>(builder.Configuration.GetSection("MongoSettings"));
 
 builder.Services.AddSingleton<MongoContext>();
