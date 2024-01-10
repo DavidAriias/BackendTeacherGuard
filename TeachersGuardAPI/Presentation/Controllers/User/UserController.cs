@@ -37,7 +37,7 @@ namespace TeachersGuardAPI.Presentation.Controllers.User
                 return Ok(user);
             }
 
-            return Unauthorized("Credenciales incorrectas, intente nuevamente");
+            return Unauthorized(new { Message = "Credenciales incorrectas, intente nuevamente" });
         }
 
     }
