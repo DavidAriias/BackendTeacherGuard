@@ -21,7 +21,7 @@ namespace TeachersGuardAPI.Presentation.Controllers.Schedule
 
             var schedules = await _scheduleUseCase.GetScheduleByUserId(userId);
 
-            return schedules != null ? Ok(new { attendances = schedules }) : NotFound(
+            return schedules != null ? Ok(new { Schedules = schedules }) : NotFound(
                 new { Message = "Este usuario no tiene un horario asignado" }
                 );
         }
