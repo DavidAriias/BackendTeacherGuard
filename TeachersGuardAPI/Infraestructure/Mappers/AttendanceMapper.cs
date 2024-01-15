@@ -23,7 +23,8 @@ namespace TeachersGuardAPI.Infraestructure.Mappers
             AttendanceId = attendance.AttendanceId,
             EntryDate = attendance.EntryDate,
             ExitDate = attendance.ExitDate,
-            FullAttendance = attendance.FullAttendance            
+            FullAttendance = attendance.FullAttendance,
+            PlaceName = ""
         };
 
         public static Attendance MapAttendanceDocumentToAttendanceEntity(AttendanceDocument attendanceDocument) => new()

@@ -1,8 +1,10 @@
 ﻿using TeachersGuardAPI.App.DTOs.Attendance;
+using TeachersGuardAPI.App.DTOs.Schedule;
 using TeachersGuardAPI.Config.helpers;
 using TeachersGuardAPI.Domain.Entities;
 using TeachersGuardAPI.Domain.Repositories;
 using TeachersGuardAPI.Infraestructure.Mappers;
+using TeachersGuardAPI.Infraestructure.Repositories;
 
 namespace TeachersGuardAPI.App.UseCases.Attendace
 {
@@ -10,13 +12,16 @@ namespace TeachersGuardAPI.App.UseCases.Attendace
     {
         private readonly IAttendanceRepository _attendanceRepository;
         private readonly IScheduleRepository _scheduleRepository;
+        private readonly IPlaceRepository _placeRepository;
         public AttendanceUseCase(
             IAttendanceRepository attendanceRepository,
-            IScheduleRepository scheduleRepository
+            IScheduleRepository scheduleRepository,
+            IPlaceRepository placeRepository
             ) 
         {
             _attendanceRepository = attendanceRepository;
             _scheduleRepository = scheduleRepository;
+            _placeRepository = placeRepository;
         }
 
 
@@ -87,7 +92,15 @@ namespace TeachersGuardAPI.App.UseCases.Attendace
 
             if (attendances == null) return null;
 
-            return attendances.Select(AttendanceMapper.MapAttendanceEntityToAttendanceDto).ToList();
+           var attendancesDtos = attendances.Select(AttendanceMapper.MapAttendanceEntityToAttendanceDto).ToList();
+
+            foreach (var attendanceDto in attendancesDtos)
+            {
+                var place = await _placeRepository.GetPlaceByPlaceId(attendanceDto.PlaceId);
+                attendanceDto.PlaceName = place?.Name ?? "";
+            }
+
+            return attendancesDtos;
         }
     }
 }
