@@ -7,19 +7,30 @@ namespace TeachersGuardAPI.App.UseCases.Schedule
     public class ScheduleUseCase
     {
         private readonly IScheduleRepository _scheduleRepository;
-        public ScheduleUseCase(IScheduleRepository scheduleRepository) 
+        private readonly IPlaceRepository _placeRepository;
+        public ScheduleUseCase(IScheduleRepository scheduleRepository , IPlaceRepository placeRepository) 
         {
             _scheduleRepository = scheduleRepository;
+            _placeRepository = placeRepository;
         }
 
         public async Task<List<ScheduleDtoOut>?> GetScheduleByUserId(string userId)
         {
-            var schedules =  await _scheduleRepository.GetSchedulesByUserId(userId);
+            var schedules = await _scheduleRepository.GetSchedulesByUserId(userId);
 
             if (schedules == null) return null;
 
-            return schedules.Select(ScheduleMapper.MapScheduleEntityToScheduleDto).ToList();
+            var scheduleDtos = schedules.Select(ScheduleMapper.MapScheduleEntityToScheduleDto).ToList();
+
+            foreach (var scheduleDto in scheduleDtos)
+            {
+               var place  = await _placeRepository.GetPlaceByPlaceId(scheduleDto.PlaceId);
+               scheduleDto.PlaceName = place?.Name ?? "";
+            }
+
+            return scheduleDtos;
         }
+
 
         public async Task<bool> UserHasSchedule(string userId)
         {

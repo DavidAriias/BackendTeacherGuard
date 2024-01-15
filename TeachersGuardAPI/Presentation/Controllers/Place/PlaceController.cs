@@ -21,7 +21,7 @@ namespace TeachersGuardAPI.Presentation.Controllers.Place
 
             var place = await _placeUseCase.GetPlaceByPlaceId(placeId);
 
-            return place != null ? Ok(place) : NotFound("This placeId maybe doesn't exits");
+            return place != null ? Ok(place) : NotFound(new { Message = "This placeId maybe doesn't exits" });
         }
 
 

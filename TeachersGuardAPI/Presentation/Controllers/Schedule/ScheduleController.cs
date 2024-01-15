@@ -17,7 +17,7 @@ namespace TeachersGuardAPI.Presentation.Controllers.Schedule
         [HttpGet("get-list-schedule")]
         public async Task<ActionResult<List<ScheduleDtoOut>?>> GetScheduleByUserId(string userId)
         {
-            if (userId == null) return BadRequest("userId must be provided");
+            if (userId == null) return BadRequest(new { Message = "userId must be provided" });
 
             var schedules = await _scheduleUseCase.GetScheduleByUserId(userId);
 
@@ -31,7 +31,8 @@ namespace TeachersGuardAPI.Presentation.Controllers.Schedule
         {
            var scheduleResponse = await _scheduleUseCase.CreateSchedule(schedule);
 
-            if (scheduleResponse == null) return StatusCode(500, "Error al crear el horario, intente mas tarde");
+            if (scheduleResponse == null) return StatusCode(500,
+               new { Message = "Error al crear el horario, intente mas tarde" });
 
             return Ok(scheduleResponse);
         }
