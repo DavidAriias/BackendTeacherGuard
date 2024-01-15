@@ -74,7 +74,7 @@ namespace TeachersGuardAPI.Presentation.Controllers.Attendace
 
             var attendances = await _attendanceUseCase.GetListAttendancesByUserId(userId);
 
-            return Ok(attendances);
+            return Ok(new { Attendances = attendances });
 
         }
     }
