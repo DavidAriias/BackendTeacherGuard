@@ -15,7 +15,7 @@ namespace TeachersGuardAPI.Presentation.Controllers.User
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateUser([FromQuery] CreateUserDto userDto)
+        public async Task<IActionResult> CreateUser(CreateUserDto userDto)
         {
             var userId = await _userUseCase.CreateUserAsync(userDto);
 
