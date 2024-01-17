@@ -21,6 +21,15 @@ builder.Services.AddCors(options =>
                           .AllowAnyHeader());
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("https://davidariias.github.io")
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
+
 builder.Services.Configure<MongoConfig>(builder.Configuration.GetSection("MongoSettings"));
 
 builder.Services.AddSingleton<MongoContext>();
@@ -47,6 +56,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors("AllowOrigin");
+app.UseCors("AllowSpecificOrigin");
 
 
 app.UseHttpsRedirection();
