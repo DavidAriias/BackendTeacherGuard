@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TeachersGuardAPI.App.DTOs.User;
-using TeachersGuardAPI.App.UseCases.User;
+using TeachersGuardAPI.App.UseCases.UserUseCase;
 
 namespace TeachersGuardAPI.Presentation.Controllers.User
 {
@@ -38,6 +38,19 @@ namespace TeachersGuardAPI.Presentation.Controllers.User
             }
 
             return Unauthorized(new { Message = "Credenciales incorrectas, intente nuevamente" });
+        }
+
+        [HttpGet("get-by-user-email-or-employee-number")]
+        public async Task<ActionResult<UserDtoOut?>> GetUserByEmailOrEmployeeNumber(string emailOrEmployeeNumber)
+        {
+            var user = await _userUseCase.GetUserByEmailOrEmployeeNumberAsync(emailOrEmployeeNumber);
+
+            if (user != null)
+            {
+                return Ok(user);
+            }
+
+            return Unauthorized(new { Message = "No hay usuarios con ese email o numero de empleado" });
         }
 
     }

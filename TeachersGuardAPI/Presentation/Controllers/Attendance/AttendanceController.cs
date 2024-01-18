@@ -2,7 +2,7 @@
 using TeachersGuardAPI.App.DTOs.Attendance;
 using TeachersGuardAPI.App.UseCases.Attendace;
 using TeachersGuardAPI.App.UseCases.Schedule;
-using TeachersGuardAPI.App.UseCases.User;
+using TeachersGuardAPI.App.UseCases.UserUseCase;
 
 namespace TeachersGuardAPI.Presentation.Controllers.Attendace
 {

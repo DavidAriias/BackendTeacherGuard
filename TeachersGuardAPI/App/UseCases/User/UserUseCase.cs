@@ -3,9 +3,10 @@ using TeachersGuardAPI.App.DTOs.User;
 using TeachersGuardAPI.Config.helpers;
 using TeachersGuardAPI.Domain.Repositories;
 using TeachersGuardAPI.Infraestructure.Mappers;
+using TeachersGuardAPI.Domain.Entities;
 
 
-namespace TeachersGuardAPI.App.UseCases.User
+namespace TeachersGuardAPI.App.UseCases.UserUseCase
 {
     public class UserUseCase
     {
@@ -29,6 +30,19 @@ namespace TeachersGuardAPI.App.UseCases.User
             var userFounded = await _userRepository.GetUserAsync(userRepository);
 
             if (userFounded is null || !EncryptHelper.VerifyPassword(user.Password, userFounded.Password))
+            {
+                return null;
+            }
+
+            return UserMapper.MapUserEntityToUserDtoOut(userFounded);
+        }
+
+        public async Task<UserDtoOut?> GetUserByEmailOrEmployeeNumberAsync(string emailOrEmployeeNumber)
+        {
+            var userRepository = new User {  EmailOrEmployeeNumber = emailOrEmployeeNumber };
+            var userFounded = await _userRepository.GetUserAsync(userRepository);
+
+            if (userFounded is null)
             {
                 return null;
             }
