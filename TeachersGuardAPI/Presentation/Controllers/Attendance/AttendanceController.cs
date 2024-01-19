@@ -77,5 +77,15 @@ namespace TeachersGuardAPI.Presentation.Controllers.Attendace
             return Ok(new { Attendances = attendances });
 
         }
+
+        [HttpGet("get-week-attendances")]
+        public async Task<ActionResult<WeekAttendanceDto>> GetWeekAttendancesByUserId(string userId)
+        {
+            var weekAttendance = await _attendanceUseCase.GetWeekAttendanceByUserIdAsync(userId);
+
+            if (weekAttendance == null) return NotFound(new { Message = "Usuario no encontrado"});
+
+            return Ok(new { WeekAttendances = weekAttendance });
+        }
     }
 }

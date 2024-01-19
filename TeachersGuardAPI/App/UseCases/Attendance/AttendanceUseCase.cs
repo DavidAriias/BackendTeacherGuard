@@ -4,7 +4,6 @@ using TeachersGuardAPI.Config.helpers;
 using TeachersGuardAPI.Domain.Entities;
 using TeachersGuardAPI.Domain.Repositories;
 using TeachersGuardAPI.Infraestructure.Mappers;
-using TeachersGuardAPI.Infraestructure.Repositories;
 
 namespace TeachersGuardAPI.App.UseCases.Attendace
 {
@@ -101,6 +100,41 @@ namespace TeachersGuardAPI.App.UseCases.Attendace
             }
 
             return attendancesDtos;
+        }
+
+        public async Task<WeekAttendanceDto?> GetWeekAttendanceByUserIdAsync(string userId)
+        {
+            var schedules = await _scheduleRepository.GetSchedulesByUserId(userId);
+
+
+            if (schedules == null) return null;
+
+            var attendances = await _attendanceRepository.GetAllAttendancesByUserIdAsync(userId);
+
+            // Obtén la fecha actual
+            DateTime currentWeekStart = DateTime.Now;
+
+            // Calcula el primer día de la semana restando los días correspondientes
+            currentWeekStart = currentWeekStart.AddDays(-(int)currentWeekStart.DayOfWeek);
+            var currentWeekEnd = currentWeekStart.AddDays(7).AddSeconds(-1);
+
+  
+            var filteredAttendances = attendances
+                ?.Where(attendance =>
+                    attendance.FullAttendance &&
+                    attendance.EntryDate >= currentWeekStart &&
+                    attendance.EntryDate <= currentWeekEnd)
+                .ToList();
+
+            return new WeekAttendanceDto
+            {
+                Attendances = filteredAttendances?.Count() ?? 0,
+                TotalAttendances = schedules.Count()
+            };
+
+
+            
+
         }
     }
 }
