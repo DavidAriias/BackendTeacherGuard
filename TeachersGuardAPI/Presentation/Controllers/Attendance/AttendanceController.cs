@@ -74,6 +74,8 @@ namespace TeachersGuardAPI.Presentation.Controllers.Attendace
 
             var attendances = await _attendanceUseCase.GetListAttendancesByUserId(userId);
 
+            if (attendances == null) Conflict(new { Message = "Usuario no tiene registrada assitencias" });
+
             return Ok(new { Attendances = attendances });
 
         }
