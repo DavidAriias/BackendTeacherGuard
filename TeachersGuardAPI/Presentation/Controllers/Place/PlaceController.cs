@@ -17,12 +17,22 @@ namespace TeachersGuardAPI.Presentation.Controllers.Place
         [HttpGet]
         public async Task<ActionResult<PlaceDto?>> GetPlaceByPlaceId(string placeId)
         {
-            if (placeId == null) return BadRequest("placeId must be provided");
+            if (placeId == null) return BadRequest("El placeId debe ser dado");
 
             var place = await _placeUseCase.GetPlaceByPlaceId(placeId);
 
-            return place != null ? Ok(place) : NotFound(new { Message = "This placeId maybe doesn't exits" });
+            return place != null ? Ok(new { Place = place }) : NotFound(new { Message = "El id proporcionado no fue encontrado" });
         }
+
+        [HttpGet("get-places")]
+        public async Task<ActionResult<List<PlaceDto>>> GetPlaces()
+        {   
+            var places = await _placeUseCase.GetPlaces();
+
+            return Ok(new { Places = places});
+        }
+
+
 
 
     }

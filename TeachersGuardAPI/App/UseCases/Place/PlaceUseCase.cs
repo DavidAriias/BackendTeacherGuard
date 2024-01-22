@@ -21,5 +21,12 @@ namespace TeachersGuardAPI.App.UseCases.PlaceUseCase
             return PlaceMapper.MapPlaceEntityToPlaceDto(place);
         }
 
+        public async Task<List<PlaceDto>> GetPlaces()
+        {
+            var places = await _placeRepository.GetPlaces();
+
+            return places.Select(PlaceMapper.MapPlaceEntityToPlaceDto).ToList();
+        }
+
     }
 }

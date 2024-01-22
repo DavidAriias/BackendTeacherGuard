@@ -33,5 +33,15 @@ namespace TeachersGuardAPI.Infraestructure.Repositories
 
             return null;
         }
+
+        public async Task<List<Place>> GetPlaces()
+        {
+            _logger.LogInformation("Finding all places saved");
+
+            var placeDocuments = await _context.Places.Find(_ => true).ToListAsync();
+
+            return placeDocuments.Select(PlaceMapper.MapPlaceDocumentToPlaceEntity).ToList();
+        }
+
     }
 }
