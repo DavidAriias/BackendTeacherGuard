@@ -1,5 +1,4 @@
 ﻿using TeachersGuardAPI.App.DTOs.Attendance;
-using TeachersGuardAPI.App.DTOs.Schedule;
 using TeachersGuardAPI.Config.helpers;
 using TeachersGuardAPI.Domain.Entities;
 using TeachersGuardAPI.Domain.Repositories;

@@ -32,8 +32,15 @@ namespace TeachersGuardAPI.Presentation.Controllers.Place
             return Ok(new { Places = places});
         }
 
+        [HttpGet("get-use-by-place-id")]
+        public async Task<ActionResult<UsePlaceDto?>> GetUseByPlaceId(string placeId)
+        {
+            var place = await _placeUseCase.GetUseByPlaceId(placeId);
 
+            if (place == null) return NotFound(new { Message = "El id proporcionado no fue encontrado" });
 
+            return place;
+        }
 
     }
 }

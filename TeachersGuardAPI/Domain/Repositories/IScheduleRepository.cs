@@ -7,5 +7,6 @@ namespace TeachersGuardAPI.Domain.Repositories
         public Task<List<Schedule>?> GetSchedulesByUserId(string userId);
         public Task<bool> UserHasSchedule(string userId);
         public Task<Schedule?> CreateSchedule(Schedule schedule);
+        public Task<List<Schedule>?> GetSchedulesByPlaceId(string placeId);
     }
 }

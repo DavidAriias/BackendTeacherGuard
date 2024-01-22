@@ -54,6 +54,22 @@ namespace TeachersGuardAPI.Infraestructure.Repositories
             return null;
         }
 
+        public async Task<List<Attendance>?> GetAttendancesByPlaceIdAsync(string placeId)
+        {
+            _logger.LogInformation("Getting all attendances for place with id :" + placeId);
+
+            var filter = Builders<AttendanceDocument>.Filter.Eq(u => u.PlaceId, ObjectId.Parse(placeId));
+
+            var attendanceDocuments = await _context.Attendances.Find(filter).ToListAsync();
+
+            if (attendanceDocuments != null && attendanceDocuments.Any())
+            {
+                return attendanceDocuments.Select(AttendanceMapper.MapAttendanceDocumentToAttendanceEntity).ToList();
+            }
+
+            return null;
+        }
+
         public async Task<bool> UpdateAttendanceAsync(Attendance attendance)
         {
             _logger.LogInformation("Updating attendance for user with ID: " + attendance.UserId);

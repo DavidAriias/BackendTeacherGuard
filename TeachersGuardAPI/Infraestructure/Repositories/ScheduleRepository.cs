@@ -41,6 +41,22 @@ namespace TeachersGuardAPI.Infraestructure.Repositories
             }
         }
 
+        public async Task<List<Schedule>?> GetSchedulesByPlaceId(string placeId)
+        {
+            _logger.LogInformation("Finding schedules for place with id: " + placeId);
+
+            var filter = Builders<ScheduleDocument>.Filter.Eq(u => u.PlaceId, placeId);
+
+            var scheduleDocuments = await _context.Schedules.Find(filter).ToListAsync();
+
+            if (scheduleDocuments != null && scheduleDocuments.Any())
+            {
+                return scheduleDocuments.Select(ScheduleMapper.MapScheduleDocumentToScheduleEntity).ToList();
+            }
+
+            return null;
+        }
+
         public async Task<List<Schedule>?> GetSchedulesByUserId(string userId)
         {
             _logger.LogInformation("Finding schedules for user with UserId: " + userId);
