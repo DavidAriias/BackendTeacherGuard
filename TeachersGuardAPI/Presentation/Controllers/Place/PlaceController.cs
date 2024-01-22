@@ -39,7 +39,7 @@ namespace TeachersGuardAPI.Presentation.Controllers.Place
 
             if (place == null) return NotFound(new { Message = "El id proporcionado no fue encontrado" });
 
-            return place;
+            return Ok(new { UsePlace = place });
         }
 
     }
