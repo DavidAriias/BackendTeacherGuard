@@ -41,13 +41,13 @@ namespace TeachersGuardAPI.App.UseCases.PlaceUseCase
             var attendances = await _attendanceRepository.GetAttendancesByPlaceIdAsync(placeId);
             var schedules = await _scheduleRepository.GetSchedulesByPlaceId(placeId);
 
-            if (attendances == null || schedules == null) return null;
+            if (schedules == null) return null;
 
             return new UsePlaceDto
             {
                 PlaceId = placeId,
                 TotalAttendances = schedules.Sum(schedule => schedule.DayOfWeek.Count()),
-                Attendances = attendances.Count()
+                Attendances = attendances?.Count() ?? 0
             };
         }
 
