@@ -43,11 +43,25 @@ namespace TeachersGuardAPI.App.UseCases.PlaceUseCase
 
             if (schedules == null) return null;
 
+            // Get the current date
+            DateTime currentWeekStart = DateTime.Now;
+
+            // Calculate the first day of the week by subtracting the corresponding days
+            currentWeekStart = currentWeekStart.AddDays(-(int)currentWeekStart.DayOfWeek);
+            var currentWeekEnd = currentWeekStart.AddDays(7).AddSeconds(-1);
+
+            var filteredAttendances = attendances
+                ?.Where(attendance =>
+                    attendance.FullAttendance &&
+                    attendance.EntryDate >= currentWeekStart &&
+                    attendance.EntryDate <= currentWeekEnd)
+                .ToList();
+
             return new UsePlaceDto
             {
                 PlaceId = placeId,
                 TotalAttendances = schedules.Sum(schedule => schedule.DayOfWeek.Count()),
-                Attendances = attendances?.Count() ?? 0
+                Attendances = filteredAttendances?.Count ?? 0
             };
         }
 
