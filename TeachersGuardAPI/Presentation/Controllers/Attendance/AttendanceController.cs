@@ -26,20 +26,20 @@ namespace TeachersGuardAPI.Presentation.Controllers.Attendace
 
         
         [HttpPost("register-entry")]
-        public async Task<IActionResult> RegisterEntryAttendance(string userId)
+        public async Task<IActionResult> RegisterEntryAttendance(string emailOrEmployeeNumber)
         {
-        
-            var isUserExists = await _userUseCase.FindUserById(userId);
+           
+            var user = await _userUseCase.GetUserByEmailOrEmployeeNumberAsync(emailOrEmployeeNumber);
 
-            if (!isUserExists) return BadRequest(new { Message = "Usuario no encontrado" });
+            if (user == null) return BadRequest(new { Message = "Usuario no encontrado" });
 
-          
-            var userHasSchedule = await _scheduleUseCase.UserHasSchedule(userId);
+
+            var userHasSchedule = await _scheduleUseCase.UserHasSchedule(user.Id);
 
             if (!userHasSchedule) return BadRequest(new { Message = "Este usuario no tiene algun horario registrado" });
 
 
-            var attendanceResult = await _attendanceUseCase.RegisterEntryAttendance(userId);
+            var attendanceResult = await _attendanceUseCase.RegisterEntryAttendance(user.Id);
 
             if (attendanceResult != null) return Conflict(new { Message = attendanceResult });
 
@@ -47,18 +47,15 @@ namespace TeachersGuardAPI.Presentation.Controllers.Attendace
         }
         
         [HttpPost("register-exit")]
-        public async Task<IActionResult> RegisterExitAttendance(string userId)
+        public async Task<IActionResult> RegisterExitAttendance(string emailOrEmployeeNumber)
         {
-            if (userId == null)
-            {
-                return BadRequest(new { Message = "userId is missing" });
-            }
 
-            var isUserExists = await _userUseCase.FindUserById(userId);
 
-            if (!isUserExists) return BadRequest(new { Message = "Usuario no encontrado" });
+            var user = await _userUseCase.GetUserByEmailOrEmployeeNumberAsync(emailOrEmployeeNumber);
 
-            var attendanceResult = await _attendanceUseCase.RegisterExitAttendanceByUserId(userId);
+            if (user == null) return BadRequest(new { Message = "Usuario no encontrado" });
+
+            var attendanceResult = await _attendanceUseCase.RegisterExitAttendanceByUserId(user.Id);
 
             if (attendanceResult == null) return Ok(new { Message = "El registro de salida fue guardado exitosamente" });
 
